@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+	<CustomAction Id="Goldfish.ScriptLink"
+				Location="ScriptLink"
+				ScriptBlock=
+	"function addHeadLink(src, type, callback) {
+		var link = document.createElement(type === 'js' ? 'script' : 'link');
+
+		link.setAttribute(type === 'js' ? 'src' : 'href', src);
+		link.setAttribute(type === 'js' ? 'type' : 'rel', type === 'js' ? 'text/javascript' : 'stylesheet');
+
+		if (typeof callback !== 'undefined') {
+			link.onreadystatechange = function ( ) {
+				if (this.readyState == 'complete') {
+					callback();
+				}
+			};
+			
+			link.onload = function ( ) {
+				callback();
+			};
+		}
+
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
+	
+	function primeGoldfish() {
+		getAnimateCss(true);
+		addHeadLink(_spPageContextInfo.siteAbsoluteUrl + '/Style Library/goldfish.demo.min.js', 'js');
+	}
+
+	function getAnimateCss() {
+		addHeadLink('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css', 'css');
+	}
+
+	(function() {
+		var ua = window.navigator.userAgent;
+
+		if (ua.indexOf('MSIE ') > -1 || ua.indexOf('Trident/') > -1 || ua.indexOf('Edge/') > -1) {
+			//IE Pollyfill
+			addHeadLink('https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser-polyfill.min.js', 'js', primeGoldfish);
+		} else {
+			//not in ie
+			primeGoldfish();
+		}
+	})();"
+				Sequence="10" />	
+	<CustomAction Id="Goldfish.MenuLink"
+				GroupId="SiteActions"
+				Location="Microsoft.SharePoint.StandardMenu"
+				Sequence="22"
+				Title="Goldfish">
+	<!-- 
+	Update the Url below to the page you want the custom action to use.
+	Start the URL with the token ~remoteAppUrl if the page is in the
+	associated web project, use ~appWebUrl if page is in the app project.
+	-->
+		<UrlAction Url="javascript:Goldfish.Create()" />
+	</CustomAction>
+</Elements>
