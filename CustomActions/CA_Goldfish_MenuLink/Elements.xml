@@ -26,11 +26,16 @@
 	
 	function primeGoldfish() {
 		getAnimateCss(true);
-		addHeadLink(_spPageContextInfo.siteAbsoluteUrl + '/Style Library/goldfish.demo.min.js', 'js');
+    getGoldfishStyles(true);
+		addHeadLink(_spPageContextInfo.siteAbsoluteUrl + '/Style Library/goldfish.min.js', 'js');
 	}
 
 	function getAnimateCss() {
 		addHeadLink('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css', 'css');
+	}
+  
+  function getGoldfishStyles() {
+		addHeadLink(_spPageContextInfo.siteAbsoluteUrl + '/Style Library/Goldfish.min.css', 'css');
 	}
 
 	(function() {
